@@ -1,0 +1,10 @@
+set(aikido_VERSION x.y.z)
+
+@PACKAGE_INIT@
+
+# This is an auto-generated file that creates IMPORTed targets with the correct
+# properties (e.g. IMPORTED_LOCATION) set.
+include("${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Targets.cmake")
+
+# Clean up after ourselves.
+unset(all_targets)
