@@ -1,3 +1,4 @@
+set(LIBRARY_INSTALL_DIR "lib")
 add_library(${PROJECT_NAME}
   CameraUtil.cpp
   DebugImage.cpp
@@ -36,4 +37,13 @@ if (CAIRO_FOUND)
   add_executable(maketags maketags.cpp)
   target_link_libraries(maketags ${CAIRO_LIBRARIES} ${AT_LIBS} ${CAIRO_LIBS})
 
-endif() 
+endif()
+
+
+# this library should be added in the subdirectory from "add_subdirectory(src)"
+install(TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
+  DESTINATION "${LIBRARY_INSTALL_DIR}"
+)
+
+

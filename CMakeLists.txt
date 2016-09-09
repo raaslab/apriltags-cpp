@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 2.6)
 
 project(apriltagscpp)
 
+include_directories(include)
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
@@ -31,7 +33,6 @@ add_definitions(-DMZ_HAVE_CAIRO)
 endif ()
 
 find_package( CGAL QUIET COMPONENTS  )
-
 if (CGAL_FOUND)
   include( ${CGAL_USE_FILE} )
   add_definitions(-DHAVE_CGAL)
@@ -56,26 +57,22 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
 add_subdirectory(src)
 
+
 # ------------------------------------------------
-
-
-
 # Configuration Options
 set(INCLUDE_INSTALL_DIR "include")
 set(LIBRARY_INSTALL_DIR "lib")
 set(CONFIG_INSTALL_DIR "${LIBRARY_INSTALL_DIR}/${PROJECT_NAME}/cmake")
 
-# Enable coveralls. This must appear before any targets are created.
-if(COVERALLS)
-  include(Coveralls)
-  coveralls_turn_on_coverage()
-endif()
 
+# Add all targets to the build-tree export set
+export(TARGETS ${PROJECT_NAME} camtest tagtest quadtest gltest maketags
+  FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")
 
-install(TARGETS "${PROJECT_NAME}"
-  EXPORT "${PROJECT_NAME}Targets"
-  LIBRARY DESTINATION "${LIBRARY_INSTALL_DIR}"
-)
+# Export the package for use from the build-tree
+# (this registers the build-tree with a global CMake-registry)
+export(PACKAGE ${PROJECT_NAME})
+
 
 # Generate and install a Targets.cmake file that contains EXPORTED targets, to
 # be included() in the Config.cmake file. The target set "${PROJECT_NAME}Targets" is
@@ -85,11 +82,16 @@ install(EXPORT "${PROJECT_NAME}Targets"
   DESTINATION "${CONFIG_INSTALL_DIR}"
 )
 
-
 # Install the package.xml file (to satisfy apriltagscpp).
 install(FILES "package.xml"
   DESTINATION "share/${PROJECT_NAME}"
 )
+
+
+# ... for the build tree
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
+# ... for the install tree
+#set(CONF_INCLUDE_DIRS "\${apriltagscpp_CMAKE_DIR}/${REL_INCLUDE_DIR}")
 
 # Generate and install a Config.cmake file.
 include(CMakePackageConfigHelpers)
@@ -98,8 +100,14 @@ configure_package_config_file("cmake/${PROJECT_NAME}Config.cmake.in"
   INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
   PATH_VARS INCLUDE_INSTALL_DIR
 )
+
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
   DESTINATION "${CONFIG_INSTALL_DIR}"
 )
+
+
+
+# Install the export set for use with the install-tree
+install(EXPORT ${PROJECT_NAME}Targets DESTINATION "${CONFIG_INSTALL_DIR}")
 # ------------------------------------------------
 
