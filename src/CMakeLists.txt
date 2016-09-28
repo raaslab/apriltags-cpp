@@ -1,5 +1,5 @@
-set(LIBRARY_INSTALL_DIR "lib")
-add_library(${PROJECT_NAME}
+
+add_library(${PROJECT_NAME} SHARED
   CameraUtil.cpp
   DebugImage.cpp
   Geometry.cpp 
@@ -40,10 +40,8 @@ if (CAIRO_FOUND)
 endif()
 
 
-# this library should be added in the subdirectory from "add_subdirectory(src)"
-install(TARGETS ${PROJECT_NAME}
-  EXPORT ${PROJECT_NAME}Targets
-  DESTINATION "${LIBRARY_INSTALL_DIR}"
-)
+install(DIRECTORY "../include/"
+  DESTINATION ${INCLUDE_INSTALL_DIR}/${PROJECT_NAME})
 
-
+install(TARGETS ${PROJECT_NAME} LIBRARY 
+  DESTINATION ${LIBRARY_INSTALL_DIR})

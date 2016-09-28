@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>apriltags-cpp</name>
+  <name>apriltagscpp</name>
   <version>0.0.2</version>
   <description>
     Personal Robotics Lab's fork of Apriltags which was originally 

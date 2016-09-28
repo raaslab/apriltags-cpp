@@ -1,19 +1,8 @@
-# - Config file for the apriltagscpp package
-# It defines the following variables
-#  apriltagscpp_INCLUDE_DIRS - include directories for FooBar
-#  apriltagscpp_LIBRARIES    - libraries to link against
-#  apriltagscpp_EXECUTABLE   - the bar executable
- 
-# Compute paths
-get_filename_component(apriltagscpp_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-set(apriltagscpp_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+find_path(apriltagscpp_INCLUDE_DIR NAMES apriltagscpp/TagDetector.h HINTS @CMAKE_INSTALL_PREFIX@/include)
 
-# Our library dependencies (contains definitions for IMPORTED targets)
-if(NOT TARGET apriltagscpp AND NOT apriltagscpp_BINARY_DIR)
-  include("${apriltagscpp_CMAKE_DIR}/apriltagscppTargets.cmake")
-endif()
+find_library(apriltagscpp_LIBRARY NAMES apriltagscpp HINTS @CMAKE_INSTALL_PREFIX@/lib)
 
-# These are IMPORTED targets created by FooBarTargets.cmake
-set(apriltagscpp_LIBRARIES apriltagscpp)
-set(apriltagscpp_EXECUTABLE apriltagscpp camtest tagtest quadtest gltest maketags)
 
+mark_as_advanced(apriltagscpp_INCLUDE_DIR apriltagscpp_LIBRARY)
+
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(apriltagscpp FOUND_VAR apriltagscpp_FOUND REQUIRED_VARS apriltagscpp_LIBRARY apriltagscpp_INCLUDE_DIR)
