@@ -1,4 +1,5 @@
-add_library(apriltags
+
+add_library(${PROJECT_NAME} SHARED
   CameraUtil.cpp
   DebugImage.cpp
   Geometry.cpp 
@@ -11,9 +12,9 @@ add_library(apriltags
   UnionFindSimple.cpp
 )
 
-set(AT_LIBS apriltags ${OPENCV_LDFLAGS})
+set(AT_LIBS ${PROJECT_NAME} ${OPENCV_LDFLAGS})
 
-target_link_libraries(apriltags ${AT_LIBS})
+target_link_libraries(${PROJECT_NAME} ${AT_LIBS})
 
 add_executable(camtest camtest.cpp)
 target_link_libraries(camtest ${AT_LIBS})
@@ -36,4 +37,11 @@ if (CAIRO_FOUND)
   add_executable(maketags maketags.cpp)
   target_link_libraries(maketags ${CAIRO_LIBRARIES} ${AT_LIBS} ${CAIRO_LIBS})
 
-endif() 
+endif()
+
+
+install(DIRECTORY "../include/"
+  DESTINATION ${INCLUDE_INSTALL_DIR}/${PROJECT_NAME})
+
+install(TARGETS ${PROJECT_NAME} LIBRARY 
+  DESTINATION ${LIBRARY_INSTALL_DIR})
