@@ -25,7 +25,7 @@ find_library(GLUT_LIBRARY glut)
 
 include(FindPkgConfig)
 
-pkg_search_module(OPENCV REQUIRED opencv>=2.3 opencv-2.3.1 opencv-3.1.0-dev)
+pkg_search_module(OPENCV REQUIRED opencv>=2.3 opencv-2.3.1 opencv-3.1.0-dev opencv-3.2.0-dev)
 include_directories(${OPENCV_INCLUDE_DIRS})
 
 pkg_check_modules(CAIRO cairo)
